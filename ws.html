@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ws</title>
+</head>
+<body>
+    <input type="text" placeholder="send a massage" id="input">
+   <button onclick="sendmsg()">send msg</button> 
+   <ol class="" id="ol">
+
+   </ol>
+</body>
+<script>
+    var ws=new WebSocket('ws://localhost:8080/chat')
+    ws.onopen = function(e){
+        ws.onmessage=function(e){
+            // console.log(e.data)
+
+            var ol=document.getElementById('ol')
+            var newel=document.createElement('li')
+            newel.innerHTML=e.data
+            ol.appendChild(newel)
+            // ws.close()
+        }
+
+
+    }
+    ws.onclose=function(e){
+        console.log('the conncetion is closed')
+    }
+    function sendmsg(){
+        var input=document.getElementById('input').value
+        var ol=document.getElementById('ol')
+
+        // console.log(input)
+        ws.send(input)
+        var newel=document.createElement('li')
+        newel.innerHTML=input
+        ol.appendChild(newel)
+        document.getElementById('input').value=''
+
+    }
+
+</script>
+</html>
